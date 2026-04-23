@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fast Medico — Modern Healthcare</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F7F4EF;
+    --charcoal: #1A1A1A;
+    --teal: #0E5F6B;
+    --teal-light: #D4EBEE;
+    --teal-mid: #2A8D9C;
+    --gold: #C9A84C;
+    --muted: #7A7A7A;
+    --white: #FFFFFF;
+    --red: #C0392B;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(5,13,20,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(126,207,218,0.1);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.06); }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-cta {
+    background: var(--teal);
+    color: var(--white) !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 50px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--teal-mid) !important; color: var(--white) !important; }
+
+  /* SECTION SHARED */
+  section { position: relative; }
+
+  /* PAGE 1 — HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: #050d14;
+    padding-top: 80px;
+    position: relative;
+  }
+  #galaxy-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-left { z-index: 2; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(14,95,107,0.3);
+    border: 1px solid rgba(42,141,156,0.4);
+    color: #7ecfda;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 50px;
+    margin-bottom: 1.2rem;
+  }
+  .hero-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #7ecfda; }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 600;
+    line-height: 1.08;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: #7ecfda;
+    border-bottom: 2px solid var(--gold);
+  }
+  .hero-sub {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    max-width: 360px;
+    margin-bottom: 1.8rem;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--teal);
+    color: var(--white);
+    padding: 0.75rem 1.6rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 8px 24px rgba(14,95,107,0.4);
+  }
+  .btn-primary:hover { background: var(--teal-mid); transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: #7ecfda; color: #7ecfda; }
+  .hero-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #7ecfda;
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem; letter-spacing: 0.5px; }
+
+  /* Hero Right — canvas area */
+  .hero-right {
+    position: relative;
+    height: 580px;
+  }
+
+  /* PAGE 2 — SERVICES */
+  #services {
+    background: var(--charcoal);
+    padding: 8rem 5%;
+    position: relative;
+    overflow: hidden;
+  }
+  #services::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14,95,107,0.25) 0%, transparent 70%);
+    top: -200px; right: -200px;
+    pointer-events: none;
+  }
+  .section-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+  }
+  .section-title.dark { color: var(--charcoal); }
+  .section-sub { font-size: 1rem; color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 500px; font-weight: 300; }
+  .section-sub.dark { color: var(--muted); }
+  .services-header { max-width: 1200px; margin: 0 auto 4rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
+  .services-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .service-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: transform 0.3s, background 0.3s, border-color 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    background: rgba(14,95,107,0.25);
+    border-color: rgba(14,95,107,0.5);
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--teal-mid);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(14,95,107,0.35);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+  }
+  .service-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .service-card p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.7; font-weight: 300; }
+  .service-card .learn { font-size: 0.8rem; color: var(--teal-mid); margin-top: 1.2rem; display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none; font-weight: 500; transition: gap 0.2s; }
+  .service-card:hover .learn { gap: 0.6rem; }
+
+  /* PAGE 3 — ABOUT */
+  #about {
+    background: var(--cream);
+    padding: 8rem 5%;
+    position: relative;
+  }
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-left { position: relative; }
+  .about-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 520px;
+  }
+  .about-img-main {
+    position: absolute;
+    right: 0; bottom: 0;
+    width: 75%;
+    height: 80%;
+    background: linear-gradient(135deg, var(--teal) 0%, #0D3D44 100%);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .about-img-bg {
+    position: absolute;
+    left: 0; top: 0;
+    width: 75%;
+    height: 80%;
+    background: var(--teal-light);
+    border-radius: 24px;
+  }
+  .about-sticker {
+    position: absolute;
+    bottom: 2rem; left: 0;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    z-index: 2;
+    min-width: 180px;
+  }
+  .about-sticker .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .about-sticker .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+  .about-img-symbol {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: rgba(255,255,255,0.2);
+    font-weight: 700;
+    letter-spacing: -2px;
+  }
+  .about-right { }
+  .about-right .section-tag { color: var(--teal); }
+  .about-right .section-title { color: var(--charcoal); }
+  .about-body { font-size: 1rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; font-weight: 300; }
+  .about-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .value-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 1rem;
+    background: rgba(14,95,107,0.06);
+    border-radius: 14px;
+    border: 1px solid rgba(14,95,107,0.1);
+  }
+  .value-item .vi { font-size: 1.2rem; }
+  .value-item h4 { font-size: 0.88rem; font-weight: 500; color: var(--charcoal); margin-bottom: 0.2rem; }
+  .value-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  /* PAGE 4 — DOCTORS */
+  #doctors {
+    background: #F0EDE7;
+    padding: 8rem 5%;
+  }
+  .doctors-header { max-width: 1200px; margin: 0 auto 4rem; text-align: center; }
+  .doctors-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .doctor-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .doctor-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
+  .doctor-avatar {
+    width: 100%;
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doctor-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
+  }
+  .av1 { background: linear-gradient(135deg, #D4EBEE, #9EC9D0); color: var(--teal); }
+  .av2 { background: linear-gradient(135deg, #FCE4D6, #F5A97A); color: #7A3B1E; }
+  .av3 { background: linear-gradient(135deg, #E8F5E2, #A8D98C); color: #2E6A16; }
+  .av4 { background: linear-gradient(135deg, #E8E4F8, #C4BAF0); color: #4B3D8A; }
+  .doctor-info { padding: 1.25rem; }
+  .doctor-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 0.25rem;
+  }
+  .doctor-spec { font-size: 0.78rem; color: var(--teal); font-weight: 500; letter-spacing: 0.3px; margin-bottom: 0.5rem; }
+  .doctor-exp { font-size: 0.75rem; color: var(--muted); }
+  .doctor-actions { display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.06); }
+  .doc-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid rgba(14,95,107,0.2);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--teal);
+    text-align: center;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+  .doc-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
+  .doc-btn.primary { background: var(--teal); color: white; }
+  .doc-btn.primary:hover { background: var(--teal-mid); }
+
+  /* PAGE 5 — CONTACT */
+  #contact {
+    background: var(--charcoal);
+    padding: 8rem 5% 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #contact::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14,95,107,0.2) 0%, transparent 65%);
+    bottom: -300px; left: -200px;
+    pointer-events: none;
+  }
+  .contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .contact-left .section-tag { color: var(--gold); }
+  .contact-left .section-title { color: var(--white); }
+  .contact-desc { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.75; margin-bottom: 3rem; font-weight: 300; }
+  .contact-items { display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+  .ci-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(14,95,107,0.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+  }
+  .ci-label { font-size: 0.72rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .ci-value { font-size: 0.95rem; color: var(--white); font-weight: 400; }
+  .contact-form {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 2.5rem;
+  }
+  .contact-form h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--teal-mid); }
+  .form-group select option { background: #2a2a2a; color: var(--white); }
+  .form-group textarea { resize: none; height: 100px; }
+  .form-submit {
+    width: 100%;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.2s;
+    margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: var(--teal-mid); transform: translateY(-1px); }
+
+  /* FOOTER */
+  footer {
+    background: #111;
+    padding: 3rem 5% 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.25); }
+  .footer-tagline { font-size: 0.78rem; color: rgba(255,255,255,0.25); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+  /* PARALLAX */
+  .parallax-layer { will-change: transform; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .hero-left > * { opacity: 0; animation: fadeUp 0.8s forwards; }
+  .hero-badge { animation-delay: 0.1s; }
+  .hero-title { animation-delay: 0.25s; }
+  .hero-sub { animation-delay: 0.4s; }
+  .hero-actions { animation-delay: 0.55s; }
+  .hero-stats { animation-delay: 0.7s; }
+  .hero-right { opacity: 0; animation: fadeIn 1s 0.5s forwards; }
+
+  /* SCROLL INDICATOR */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    z-index: 5;
+  }
+  .scroll-indicator span { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--teal), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+  }
+
+  /* SECTION DIVIDER */
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    border-radius: 2px;
+    margin: 1.2rem 0 1.5rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-container { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .about-container { grid-template-columns: 1fr; }
+    .about-left { display: none; }
+    .doctors-grid { grid-template-columns: 1fr 1fr; }
+    .contact-container { grid-template-columns: 1fr; }
+    .services-header { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .services-grid, .doctors-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo">Fast<span>Medico</span></div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#doctors">Doctors</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE 1: HERO -->
+<section id="hero">
+  <canvas id="galaxy-canvas"></canvas>
+  <div class="hero-container">
+    <div class="hero-left">
+      <div class="hero-badge">Trusted Healthcare Since 2008</div>
+      <h1 class="hero-title">Your Health,<br>Our <em>Priority</em></h1>
+      <p class="hero-sub">Fast Medico — expert doctors, rapid diagnostics, and compassionate care all in one place.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          Book Appointment
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#services" class="btn-secondary">
+          Our Services
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">12K+</div>
+          <div class="stat-label">Patients Served</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">40+</div>
+          <div class="stat-label">Specialists</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">16yr</div>
+          <div class="stat-label">Experience</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right"></div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line" style="background: linear-gradient(to bottom, #7ecfda, transparent);"></div>
+  </div>
+</section>
+
+<!-- PAGE 2: SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <div>
+      <div class="section-tag">What We Offer</div>
+      <div class="divider"></div>
+      <h2 class="section-title">Comprehensive<br>Medical Services</h2>
+    </div>
+    <p class="section-sub">From routine check-ups to advanced diagnostics, Fast Medico covers every aspect of your healthcare journey with precision and care.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🫀</div>
+      <h3>Cardiology</h3>
+      <p>Advanced cardiac diagnostics and treatment by India's top interventional cardiologists using state-of-the-art equipment.</p>
+      <a href="#contact" class="learn">Learn more →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🧠</div>
+      <h3>Neurology</h3>
+      <p>Comprehensive neurological care including diagnosis and management of brain, spine, and nervous system disorders.</p>
+      <a href="#contact" class="learn">Learn more →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🦴</div>
+      <h3>Orthopaedics</h3>
+      <p>Minimally invasive joint replacement and sports injury rehabilitation by experienced orthopaedic surgeons.</p>
+      <a href="#contact" class="learn">Learn more →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">👶</div>
+      <h3>Paediatrics</h3>
+      <p>Dedicated child healthcare from newborns to adolescents, with child-friendly facilities and compassionate doctors.</p>
+      <a href="#contact" class="learn">Learn more →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔬</div>
+      <h3>Diagnostics & Labs</h3>
+      <p>NABL-accredited laboratory with 600+ tests, same-day reporting, and digital results delivered to your device.</p>
+      <a href="#contact" class="learn">Learn more →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🚑</div>
+      <h3>Emergency & ICU</h3>
+      <p>Fully equipped 24/7 emergency ward with dedicated trauma care unit, critical care specialists, and rapid response team.</p>
+      <a href="#contact" class="learn">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3: ABOUT -->
+<section id="about">
+  <div class="about-container">
+    <div class="about-left">
+      <div class="about-img-wrap">
+        <div class="about-img-bg parallax-layer" data-speed="0.12"></div>
+        <div class="about-img-main parallax-layer" data-speed="0.08">
+          <div class="about-img-symbol">FM</div>
+        </div>
+        <div class="about-sticker">
+          <div class="num">16+</div>
+          <div class="lbl">Years of Excellence</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="section-tag">Our Story</div>
+      <div class="divider" style="background: linear-gradient(to right, var(--teal), var(--gold));"></div>
+      <h2 class="section-title dark">Healing Lives With<br>Science & Compassion</h2>
+      <p class="about-body">Founded in 2008, Fast Medico began with a single vision: to make high-quality healthcare accessible, affordable, and human. What started as a small general practice has grown into a multi-specialty clinic trusted by over 12,000 patients across Mumbai.</p>
+      <p class="about-body">We believe exceptional medical care is both a science and an art. Our doctors don't just treat symptoms — they invest in understanding each patient as a whole person, building lasting relationships built on trust and transparency.</p>
+      <div class="about-values">
+        <div class="value-item">
+          <span class="vi">🎯</span>
+          <div>
+            <h4>Precision Medicine</h4>
+            <p>Evidence-based protocols tailored to each individual</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <span class="vi">💚</span>
+          <div>
+            <h4>Patient First</h4>
+            <p>Every decision centres on patient wellbeing</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <span class="vi">🔐</span>
+          <div>
+            <h4>Privacy & Trust</h4>
+            <p>Your health data is fully secure and confidential</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <span class="vi">⚡</span>
+          <div>
+            <h4>Fast Results</h4>
+            <p>Same-day consultations and rapid diagnostics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 4: DOCTORS -->
+<section id="doctors">
+  <div class="doctors-header">
+    <div class="section-tag" style="color: var(--teal);">Meet The Team</div>
+    <div class="divider" style="margin: 1.2rem auto 1.5rem;"></div>
+    <h2 class="section-title dark">Our Expert Physicians</h2>
+    <p class="section-sub dark" style="margin: 0 auto; text-align: center;">Nationally recognised specialists committed to delivering the best medical outcomes.</p>
+  </div>
+  <div class="doctors-grid">
+    <div class="doctor-card">
+      <div class="doctor-avatar av1">DR</div>
+      <div class="doctor-info">
+        <h3>Dr. Rohan Mehta</h3>
+        <div class="doctor-spec">Cardiology</div>
+        <div class="doctor-exp">MBBS, MD (AIIMS) · 18 yrs exp</div>
+        <div class="doctor-actions">
+          <a href="#contact" class="doc-btn primary">Book</a>
+          <a href="#contact" class="doc-btn">Profile</a>
+        </div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar av2">SP</div>
+      <div class="doctor-info">
+        <h3>Dr. Sunita Patel</h3>
+        <div class="doctor-spec">Neurology</div>
+        <div class="doctor-exp">MBBS, DM (KEM) · 14 yrs exp</div>
+        <div class="doctor-actions">
+          <a href="#contact" class="doc-btn primary">Book</a>
+          <a href="#contact" class="doc-btn">Profile</a>
+        </div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar av3">AK</div>
+      <div class="doctor-info">
+        <h3>Dr. Arjun Kulkarni</h3>
+        <div class="doctor-spec">Orthopaedics</div>
+        <div class="doctor-exp">MBBS, MS (Bombay) · 11 yrs exp</div>
+        <div class="doctor-actions">
+          <a href="#contact" class="doc-btn primary">Book</a>
+          <a href="#contact" class="doc-btn">Profile</a>
+        </div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-avatar av4">PS</div>
+      <div class="doctor-info">
+        <h3>Dr. Priya Shah</h3>
+        <div class="doctor-spec">Paediatrics</div>
+        <div class="doctor-exp">MBBS, DCH (Grant) · 9 yrs exp</div>
+        <div class="doctor-actions">
+          <a href="#contact" class="doc-btn primary">Book</a>
+          <a href="#contact" class="doc-btn">Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 5: CONTACT -->
+<section id="contact">
+  <div class="contact-container">
+    <div class="contact-left">
+      <div class="section-tag">Get In Touch</div>
+      <div class="divider" style="background: linear-gradient(to right, var(--teal-mid), var(--gold));"></div>
+      <h2 class="section-title">Book Your<br>Appointment Today</h2>
+      <p class="contact-desc">Whether it's a routine check-up or an urgent concern, our team is ready to see you. Appointments available same-day in most cases.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div>
+            <div class="ci-label">Address</div>
+            <div class="ci-value">Fast Medico Centre, 14 Linking Road,<br>Bandra West, Mumbai — 400050</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📞</div>
+          <div>
+            <div class="ci-label">Phone</div>
+            <div class="ci-value">+91 98765 43210 (24/7 Helpline)</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">🕐</div>
+          <div>
+            <div class="ci-label">Hours</div>
+            <div class="ci-value">Mon – Sat: 8 AM – 9 PM<br>Sunday: 9 AM – 2 PM (Emergency 24/7)</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">✉️</div>
+          <div>
+            <div class="ci-label">Email</div>
+            <div class="ci-value">appointments@fastmedico.in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Request an Appointment</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Rahul">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Sharma">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input type="tel" placeholder="+91 98765 43210">
+      </div>
+      <div class="form-group">
+        <label>Department</label>
+        <select>
+          <option value="">Select a department</option>
+          <option>Cardiology</option>
+          <option>Neurology</option>
+          <option>Orthopaedics</option>
+          <option>Paediatrics</option>
+          <option>General Medicine</option>
+          <option>Diagnostics & Labs</option>
+          <option>Emergency</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preferred Date</label>
+        <input type="date">
+      </div>
+      <div class="form-group">
+        <label>Brief Description (optional)</label>
+        <textarea placeholder="Describe your concern briefly..."></textarea>
+      </div>
+      <button class="form-submit">Confirm Appointment →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Fast<span>Medico</span></div>
+    <div class="footer-links">
+      <a href="#hero">Home</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#doctors">Doctors</a>
+      <a href="#contact">Contact</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Fast Medico. All rights reserved. | NABH Accredited Clinic</p>
+    <p class="footer-tagline">Healing faster, caring deeper.</p>
+  </div>
+</footer>
+
+<script>
+  // ── Navbar scroll effect ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // ── Form submission ──
+  document.querySelector('.form-submit').addEventListener('click', function() {
+    this.textContent = '✓ Appointment Requested!';
+    this.style.background = '#27AE60';
+    setTimeout(() => { this.textContent = 'Confirm Appointment →'; this.style.background = ''; }, 3000);
+  });
+
+  // ── Smooth anchor scrolling ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // ════════════════════════════════════════
+  //   GALAXY / SOLAR SYSTEM CANVAS ENGINE
+  // ════════════════════════════════════════
+  const canvas = document.getElementById('galaxy-canvas');
+  const ctx = canvas.getContext('2d');
+
+  // Medical info nodes — each replaces a "planet"
+  const nodes = [
+    { label: '24/7 Emergency', sub: 'Always open', color: '#e74c3c', r: 18, orbitR: 110, speed: 0.0008, angle: 0, trail: [] },
+    { label: 'Cardiology', sub: '18 Specialists', color: '#e67e22', r: 14, orbitR: 175, speed: 0.00055, angle: 1.2, trail: [] },
+    { label: 'Neurology', sub: 'Brain & Spine', color: '#9b59b6', r: 16, orbitR: 245, speed: 0.00042, angle: 2.5, trail: [] },
+    { label: 'Orthopaedics', sub: 'Joint & Sports', color: '#3498db', r: 13, orbitR: 310, speed: 0.00035, angle: 0.8, trail: [] },
+    { label: 'Paediatrics', sub: 'Child Care', color: '#2ecc71', r: 15, orbitR: 370, speed: 0.00028, angle: 3.8, trail: [] },
+    { label: 'Diagnostics', sub: '600+ Tests', color: '#f39c12', r: 12, orbitR: 425, speed: 0.00022, angle: 1.9, trail: [] },
+  ];
+
+  // Stars background
+  const stars = Array.from({ length: 260 }, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random() * 1.4 + 0.2,
+    a: Math.random() * 0.8 + 0.1,
+    twinkle: Math.random() * Math.PI * 2
+  }));
+
+  // Nebula dust particles
+  const dust = Array.from({ length: 80 }, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random() * 60 + 20,
+    a: Math.random() * 0.06 + 0.01,
+    hue: Math.random() > 0.5 ? 190 : 260
+  }));
+
+  let cx, cy, W, H, t = 0;
+  let hoveredNode = null;
+
+  function resize() {
+    W = canvas.offsetWidth; H = canvas.offsetHeight;
+    canvas.width = W; canvas.height = H;
+    // Centre of solar system — right 60% area
+    cx = W * 0.62; cy = H * 0.5;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Mouse hover detection
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    hoveredNode = null;
+    nodes.forEach(n => {
+      const nx = cx + Math.cos(n.angle) * n.orbitR;
+      const ny = cy + Math.sin(n.angle) * n.orbitR;
+      if (Math.hypot(mx - nx, my - ny) < n.r + 14) hoveredNode = n;
+    });
+    canvas.style.cursor = hoveredNode ? 'pointer' : 'default';
+  });
+
+  function drawRoundRect(x, y, w, h, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + w - radius, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+    ctx.lineTo(x + w, y + h - radius);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+    ctx.lineTo(x + radius, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+  }
+
+  function loop(timestamp) {
+    t = timestamp;
+    ctx.clearRect(0, 0, W, H);
+
+    // 1. Nebula dust
+    dust.forEach(d => {
+      const grd = ctx.createRadialGradient(d.x * W, d.y * H, 0, d.x * W, d.y * H, d.r);
+      grd.addColorStop(0, `hsla(${d.hue},70%,55%,${d.a})`);
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(d.x * W, d.y * H, d.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // 2. Stars
+    stars.forEach(s => {
+      const twinkleA = s.a * (0.6 + 0.4 * Math.sin(t * 0.001 + s.twinkle));
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${twinkleA})`;
+      ctx.fill();
+    });
+
+    // 3. Sun — medical cross core
+    const sunGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 55);
+    sunGlow.addColorStop(0, 'rgba(14,95,107,0.9)');
+    sunGlow.addColorStop(0.5, 'rgba(42,141,156,0.4)');
+    sunGlow.addColorStop(1, 'rgba(14,95,107,0)');
+    ctx.fillStyle = sunGlow;
+    ctx.beginPath(); ctx.arc(cx, cy, 55, 0, Math.PI * 2); ctx.fill();
+
+    // Sun body
+    ctx.beginPath(); ctx.arc(cx, cy, 28, 0, Math.PI * 2);
+    ctx.fillStyle = '#0E5F6B'; ctx.fill();
+    ctx.strokeStyle = '#7ecfda'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // Medical cross on sun
+    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(cx, cy - 14); ctx.lineTo(cx, cy + 14); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - 14, cy); ctx.lineTo(cx + 14, cy); ctx.stroke();
+
+    // Sun label
+    ctx.fillStyle = 'rgba(126,207,218,0.7)';
+    ctx.font = '500 10px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('FAST MEDICO', cx, cy + 46);
+
+    // 4. Orbit rings + nodes
+    nodes.forEach((n, i) => {
+      // Orbit ring
+      ctx.beginPath();
+      ctx.arc(cx, cy, n.orbitR, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(126,207,218,0.08)`;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 8]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Advance angle
+      n.angle += n.speed * 16;
+
+      const nx = cx + Math.cos(n.angle) * n.orbitR;
+      const ny = cy + Math.sin(n.angle) * n.orbitR;
+
+      // Trail
+      n.trail.push({ x: nx, y: ny });
+      if (n.trail.length > 28) n.trail.shift();
+      if (n.trail.length > 2) {
+        ctx.beginPath();
+        ctx.moveTo(n.trail[0].x, n.trail[0].y);
+        n.trail.forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.strokeStyle = n.color + '33';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      const isHovered = hoveredNode === n;
+      const scale = isHovered ? 1.3 : 1;
+      const pr = n.r * scale;
+
+      // Glow
+      const glow = ctx.createRadialGradient(nx, ny, 0, nx, ny, pr * 2.5);
+      glow.addColorStop(0, n.color + '55');
+      glow.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(nx, ny, pr * 2.5, 0, Math.PI * 2); ctx.fill();
+
+      // Node body
+      ctx.beginPath(); ctx.arc(nx, ny, pr, 0, Math.PI * 2);
+      ctx.fillStyle = n.color;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Connector line to label
+      const labelSide = nx > cx ? 1 : -1;
+      const lx = nx + labelSide * (pr + 10);
+      const ly = ny;
+      ctx.beginPath();
+      ctx.moveTo(nx + labelSide * pr, ny);
+      ctx.lineTo(lx + labelSide * 8, ly);
+      ctx.strokeStyle = n.color + '88';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Info card
+      const cardW = 120, cardH = 38, cardPad = 8;
+      const cardX = labelSide === 1 ? lx + 8 : lx - cardW - 8;
+      const cardY = ly - cardH / 2;
+
+      ctx.fillStyle = 'rgba(5,13,20,0.82)';
+      drawRoundRect(cardX, cardY, cardW, cardH, 7);
+      ctx.fill();
+      ctx.strokeStyle = n.color + '55';
+      ctx.lineWidth = 1;
+      drawRoundRect(cardX, cardY, cardW, cardH, 7);
+      ctx.stroke();
+
+      // Label text
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `500 ${isHovered ? 11 : 10}px DM Sans, sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText(n.label, cardX + cardPad, cardY + 14);
+
+      ctx.fillStyle = n.color;
+      ctx.font = '9px DM Sans, sans-serif';
+      ctx.fillText(n.sub, cardX + cardPad, cardY + 28);
+
+      // Dot on node
+      ctx.beginPath(); ctx.arc(nx, ny, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff'; ctx.fill();
+    });
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>
